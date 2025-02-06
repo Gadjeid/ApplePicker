@@ -2,19 +2,23 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class ScoreCounter : MonoBehaviour
 {
     [Header("Dynamic")]
     public int score = 0;
-    private Text uiText;
+    private TMP_Text uiText;
     void Start()
     {
-        uiText = GetComponent<Text>();
+        uiText = GetComponent<TMP_Text>();
     }
 
     void Update()
     {
-        uiText.text = score.ToString("#,0");
+        if (uiText != null)
+        {
+            uiText.text = score.ToString("#,0");
+        }
     }
 }

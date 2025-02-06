@@ -4,10 +4,11 @@ using System.Collections.Generic;
 
 public class Basket : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public ScoreCounter scoreCounter;
     void Start()
     {
-        
+        GameObject scoreGo = GameObject.Find("ScoreCounter");
+        scoreCounter = scoreGo.GetComponent<ScoreCounter>();
     }
 
     // Update is called once per frame
@@ -32,6 +33,7 @@ public class Basket : MonoBehaviour
         if (collidedWith.CompareTag("Apple")) 
         {
             Destroy(collidedWith);
+            scoreCounter.score += 100;
         }
     }
 }
