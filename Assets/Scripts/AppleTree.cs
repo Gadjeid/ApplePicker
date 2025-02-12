@@ -19,44 +19,44 @@ public class AppleTree : MonoBehaviour
     // Chance that the AppleTree will change directions
     public float changeDirChance = 0.1f;
 
-    // Seconds between Apples instantiations
-    public float appleDropDelay = 1f;
-
-    // Time between branch drops
-    public float branchDropDelay = 3f;
-
-    // Time between golden apple drops
-    public float goldenAppleDropDelay = 5f;
+    // Seconds between object instantiations
+    public float dropDelay = 1f;
 
     void Start()
     {
-        Invoke("DropApple", 2f);
-        Invoke("DropBranch", 2f);
-        Invoke("DropGoldenApple", 2f);
+        Invoke("DropObject", 2f);
     }
 
-    void DropApple() 
+    void DropObject()
     {
-        GameObject apple = Instantiate<GameObject>(applePrefab);
-        Vector3 spawnPosition = transform.position + new Vector3(0, -3f, 0);
-        apple.transform.position = spawnPosition;
-        Invoke("DropApple", appleDropDelay);
+        // Generate a random number to decide which object to drop
+        float randomChance = Random.value;
+
+        // 80% chance for Apple, 15% for Branch, 5% for GoldenApple
+        if (randomChance < 0.8f)
+        {
+            // 80% chance - Drop an apple
+            Instantiate(applePrefab, GetSpawnPosition(), Quaternion.identity);
+        }
+        else if (randomChance < 0.95f)
+        {
+            // 15% chance - Drop a branch
+            Instantiate(branchPrefab, GetSpawnPosition(), Quaternion.identity);
+        }
+        else
+        {
+            // 5% chance - Drop a golden apple
+            Instantiate(goldenApplePrefab, GetSpawnPosition(), Quaternion.identity);
+        }
+
+        // Call DropObject again after the specified delay
+        Invoke("DropObject", dropDelay);
     }
 
-    void DropBranch()
+    // Method to get the spawn position for the objects
+    Vector3 GetSpawnPosition()
     {
-        GameObject branch = Instantiate<GameObject>(branchPrefab);
-        Vector3 spawnPosition = transform.position + new Vector3(0, -3f, 0);
-        branch.transform.position = spawnPosition;
-        Invoke("DropBranch", branchDropDelay);
-    }
-
-    void DropGoldenApple()
-    {
-        GameObject goldenApple = Instantiate<GameObject>(goldenApplePrefab);
-        Vector3 spawnPosition = transform.position + new Vector3(0, -3f, 0);
-        goldenApple.transform.position = spawnPosition;
-        Invoke("DropGoldenApple", goldenAppleDropDelay);
+        return transform.position + new Vector3(0, -3f, 0);
     }
 
     // Update is called once per frame

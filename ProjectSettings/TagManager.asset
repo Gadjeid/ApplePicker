@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Apple
+  - Branch
+  - GoldenApple
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - AppleTree
   - Apple
   - Basket
-  - 
+  - Branch
   - 
   - 
   - 

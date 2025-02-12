@@ -5,15 +5,16 @@ using System.Collections.Generic;
 public class Branch : MonoBehaviour
 {
     public static float bottomY = -18f;
+    private bool hasTriggeredMiss = false;
 
     void Update()
     {
-        if (transform.position.y < bottomY)
+        if (!hasTriggeredMiss && transform.position.y < bottomY)
         {
-            Destroy(this.gameObject);
-
+            hasTriggeredMiss = true;
             ApplePicker apScript = Camera.main.GetComponent<ApplePicker>();
             apScript.AppleMissed();
+            Destroy(this.gameObject);
         }
     }
 }

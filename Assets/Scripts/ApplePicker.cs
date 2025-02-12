@@ -18,6 +18,9 @@ public class ApplePicker : MonoBehaviour
     public GameObject gameOverPanel;
     public TMP_Text gameOverText;
     public Button restartButton;
+    public TMP_Text roundText;
+
+    private int currentRound = 1;
 
     void Start()
     {
@@ -32,34 +35,64 @@ public class ApplePicker : MonoBehaviour
 
         gameOverPanel.SetActive(false);
         restartButton.onClick.AddListener(RestartGame);
+
+        roundText.text = "Round " + currentRound;
     }
 
     public void AppleMissed()
     {
-        GameObject[] appleArray = GameObject.FindGameObjectsWithTag("Apple");
-        foreach (GameObject tempGO in appleArray)
+        GameObject[] fallingObjects = GameObject.FindGameObjectsWithTag("Apple");
+        foreach (GameObject tempGO in fallingObjects)
         {
             Destroy(tempGO);
+        }
+
+        fallingObjects = GameObject.FindGameObjectsWithTag("GoldenApple");
+        foreach (GameObject tempGO in fallingObjects)
+        {
+            Destroy(tempGO);
+        }
+
+        fallingObjects = GameObject.FindGameObjectsWithTag("Branch");
+        foreach (GameObject tempGO in fallingObjects)
+        {
+            Destroy(tempGO);
+        }
+
+        if (basketList.Count == 0) 
+        {
+            ShowGameOver();
+            return;
         }
 
         // Destroy one of the baskets
         int basketIndex = basketList.Count - 1;
         
-        // Get a reference to that Basket GameObject
-        GameObject basketGO = basketList[basketIndex];
-
-        // Remove the basket from the list and destroy the GameObject
-        basketList.RemoveAt(basketIndex);
-        Destroy(basketGO);
+        if (basketIndex >= 0)
+        {
+            // Get a reference to that Basket GameObject
+            GameObject basketGO = basketList[basketIndex];
+            basketList.RemoveAt(basketIndex);
+            Destroy(basketGO);
+        }
+        
 
         // If there are no baskets left, restart the game
         if (basketList.Count == 0) 
         {
             ShowGameOver();
         }
+
+        UpdateRound();
     }
     
-    void ShowGameOver()
+    void UpdateRound()
+    {
+        currentRound = Mathf.Clamp(numBaskets - basketList.Count + 1, 1, 4);
+        roundText.text = "Round " + currentRound;
+    }
+    
+    public void ShowGameOver()
     {
         Time.timeScale = 0;
         gameOverPanel.SetActive(true);

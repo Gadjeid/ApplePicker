@@ -6,10 +6,14 @@ public class Basket : MonoBehaviour
 {
     public ScoreCounter scoreCounter;
     public ApplePicker applePicker;
+    private bool hasProcessedCollision = false;
+
     void Start()
     {
         GameObject scoreGo = GameObject.Find("ScoreCounter");
         scoreCounter = scoreGo.GetComponent<ScoreCounter>();
+
+        applePicker = Camera.main.GetComponent<ApplePicker>();
     }
 
     // Update is called once per frame
@@ -31,6 +35,13 @@ public class Basket : MonoBehaviour
     {
         // Find out what hit this basket
         GameObject collidedWith = coll.gameObject;
+
+        // Check if collision has already been processed
+        if (hasProcessedCollision)
+        {
+            return;
+        }
+
         if (collidedWith.CompareTag("Apple")) 
         {
             Destroy(collidedWith);
@@ -45,7 +56,31 @@ public class Basket : MonoBehaviour
         else if (collidedWith.CompareTag("Branch"))
         {
             Destroy(collidedWith);
-            applePicker.AppleMissed(); // Call AppleMissed to handle Game Over
+
+            if (scoreCounter.score > 500) 
+            {
+                scoreCounter.score -= 500;
+            } else {
+                scoreCounter.score = 0;
+            }
+            
+            if (applePicker != null && applePicker.basketList.Count > 0)
+            {
+                Destroy(collidedWith);
+                if (applePicker != null && applePicker.basketList.Count > 0)
+                {
+                    hasProcessedCollision = true;
+                    applePicker.AppleMissed();
+                }
+            }
+        }
+    }
+
+    void OnCollisionExit(Collision coll)
+    {
+        if (coll.gameObject.CompareTag("Branch"))
+        {
+            hasProcessedCollision = false;
         }
     }
 }
