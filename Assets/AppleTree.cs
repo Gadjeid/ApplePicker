@@ -7,6 +7,8 @@ public class AppleTree : MonoBehaviour
     [Header("Inscribed")]
     // Prefab for instantiating apples
     public GameObject applePrefab;
+    public GameObject branchPrefab;
+    public GameObject goldenApplePrefab;
 
     // Speed at which the Apple Tree moves
     public float speed = 1f;
@@ -20,9 +22,17 @@ public class AppleTree : MonoBehaviour
     // Seconds between Apples instantiations
     public float appleDropDelay = 1f;
 
+    // Time between branch drops
+    public float branchDropDelay = 3f;
+
+    // Time between golden apple drops
+    public float goldenAppleDropDelay = 5f;
+
     void Start()
     {
         Invoke("DropApple", 2f);
+        Invoke("DropBranch", 2f);
+        Invoke("DropGoldenApple", 2f);
     }
 
     void DropApple() 
@@ -31,6 +41,22 @@ public class AppleTree : MonoBehaviour
         Vector3 spawnPosition = transform.position + new Vector3(0, -3f, 0);
         apple.transform.position = spawnPosition;
         Invoke("DropApple", appleDropDelay);
+    }
+
+    void DropBranch()
+    {
+        GameObject branch = Instantiate<GameObject>(branchPrefab);
+        Vector3 spawnPosition = transform.position + new Vector3(0, -3f, 0);
+        branch.transform.position = spawnPosition;
+        Invoke("DropBranch", branchDropDelay);
+    }
+
+    void DropGoldenApple()
+    {
+        GameObject goldenApple = Instantiate<GameObject>(goldenApplePrefab);
+        Vector3 spawnPosition = transform.position + new Vector3(0, -3f, 0);
+        goldenApple.transform.position = spawnPosition;
+        Invoke("DropGoldenApple", goldenAppleDropDelay);
     }
 
     // Update is called once per frame
@@ -42,9 +68,11 @@ public class AppleTree : MonoBehaviour
         transform.position = pos;
 
         // Changing Direction
-        if (pos.x < -leftAndRightEdge) {
+        if (pos.x < -leftAndRightEdge) 
+        {
             speed = Mathf.Abs(speed); // Move right
-        } else if (pos.x > leftAndRightEdge) {
+        } else if (pos.x > leftAndRightEdge) 
+        {
             speed = -Mathf.Abs(speed); // Move left
         } 
     }

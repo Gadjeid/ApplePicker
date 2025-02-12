@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class Basket : MonoBehaviour
 {
     public ScoreCounter scoreCounter;
+    public ApplePicker applePicker;
     void Start()
     {
         GameObject scoreGo = GameObject.Find("ScoreCounter");
@@ -34,6 +35,17 @@ public class Basket : MonoBehaviour
         {
             Destroy(collidedWith);
             scoreCounter.score += 100;
+            HighScore.TRY_SET_HIGH_SCORE(scoreCounter.score);
+        } else if (collidedWith.CompareTag("GoldenApple"))
+        {
+            Destroy(collidedWith);
+            scoreCounter.score += 1000; // Golden apple gives more points
+            HighScore.TRY_SET_HIGH_SCORE(scoreCounter.score);
+        }
+        else if (collidedWith.CompareTag("Branch"))
+        {
+            Destroy(collidedWith);
+            applePicker.AppleMissed(); // Call AppleMissed to handle Game Over
         }
     }
 }
