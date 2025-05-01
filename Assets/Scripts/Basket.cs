@@ -57,21 +57,8 @@ public class Basket : MonoBehaviour
         {
             Destroy(collidedWith);
 
-            if (scoreCounter.score > 500) 
-            {
-                scoreCounter.score -= 500;
-            } else {
-                scoreCounter.score = 0;
-            }
-            
-            if (applePicker != null && applePicker.basketList.Count > 0)
-            {
-                Destroy(collidedWith);
-                if (applePicker != null && applePicker.basketList.Count > 0)
-                {
-                    hasProcessedCollision = true;
-                    applePicker.AppleMissed();
-                }
+            if (applePicker != null) {
+                applePicker.ShowGameOver();
             }
         }
     }
